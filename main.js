@@ -5,10 +5,6 @@ const getTitle = require('get-title');
 const fs = require('fs');
 const path = require('path');
 
-if (process.platform === 'darwin') {
-    app.dock.hide();
-}
-
 const DATA_PATH = path.join(__dirname, './data.json');
 const data = JSON.parse(fs.readFileSync(DATA_PATH).toString());
 
