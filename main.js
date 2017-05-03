@@ -1,3 +1,4 @@
+const electron = require('electron');
 const {app, BrowserWindow, ipcMain, dialog, Tray, Menu, clipboard} = require('electron');
 const request = require('superagent');
 const getTitle = require('get-title');
@@ -20,8 +21,8 @@ app.on('ready', () => {
     win = new BrowserWindow({
         width: 400,
         height: 400,
-        x: bounds.x - 200 + (bounds.width / 2),
-        y: process.platform === 'darwin' ? bounds.y + bounds.height + 10 : bounds.y - 400 - 10,
+        x: Math.round(bounds.x - 200 + (bounds.width / 2)),
+        y: (process.platform === 'darwin') ? bounds.y + bounds.height + 10 : bounds.y - 400 - 10,
         show: false,
         resizable: false,
         movable: false,
