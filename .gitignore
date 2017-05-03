@@ -1,3 +1,5 @@
 .idea
 node_modules
 bundle.js
+electron-basic-Bookmark-react-darwin-x64
+.DS_Store

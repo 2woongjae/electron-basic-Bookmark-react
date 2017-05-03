@@ -4,7 +4,8 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "start": "webpack && electron ."
+    "start": "webpack && electron .",
+    "pack": "webpack && electron-packager . --overwrite"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +23,7 @@
     "babel-loader": "^7.0.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
+    "electron-packager": "^8.7.0",
     "prop-types": "^15.5.8",
     "webpack": "^2.4.1"
   }

@@ -5,16 +5,20 @@ const getTitle = require('get-title');
 const fs = require('fs');
 const path = require('path');
 
+if (process.platform === 'darwin') {
+    app.dock.hide();
+}
+
 const DATA_PATH = path.join(__dirname, './data.json');
 const data = JSON.parse(fs.readFileSync(DATA_PATH).toString());
 
 let win = null;
 
 app.on('ready', () => {
-    const menu = Menu.buildFromTemplate(template);
     const tray = new Tray(path.join(__dirname, './icon.png'));
 
-    tray.setContextMenu(menu);
+    tray.setContextMenu(Menu.buildFromTemplate(template.tray));
+    Menu.setApplicationMenu(Menu.buildFromTemplate(template.menu));
 
     const bounds = tray.getBounds();
 
@@ -31,7 +35,7 @@ app.on('ready', () => {
     });
 
     win.loadURL(`file://${__dirname}/index.html`);
-    // win.webContents.openDevTools();
+    win.webContents.openDevTools();
 
     win.once('ready-to-show', () => {
         win.webContents.send('data', data);
@@ -58,40 +62,57 @@ app.on('ready', () => {
     });
 });
 
-const template = [
-    {
-        label: 'Open',
-        click: () => {
-            win.show()
-        }
-    },
-    {
-        label: 'Save',
-        submenu: [
-            {
-                label: 'Home',
-                click: () => {
-                    saveItem({type: 'home', url: clipboard.readText()});
-                }
-            },
-            {
-                label: 'Github',
-                click: () => {
-                    saveItem({type: 'github', url: clipboard.readText()});
-                }
+const template = {
+    tray: [
+        {
+            label: 'Open',
+            click: () => {
+                win.show()
             }
-        ]
-    },
-    {
-        type: 'separator'
-    },
-    {
-        label: 'Quit',
-        click: () => {
-            app.quit();
+        },
+        {
+            label: 'Save',
+            submenu: [
+                {
+                    label: 'Home',
+                    click: () => {
+                        saveItem({type: 'home', url: clipboard.readText()});
+                    }
+                },
+                {
+                    label: 'Github',
+                    click: () => {
+                        saveItem({type: 'github', url: clipboard.readText()});
+                    }
+                }
+            ]
+        },
+        {
+            type: 'separator'
+        },
+        {
+            label: 'Quit',
+            click: () => {
+                app.quit();
+            }
         }
-    }
-];
+    ],
+    menu: [
+        {
+            label: app.getName(),
+            submenu: [
+                {role: 'paste'},
+                {type: 'separator'},
+                {
+                    label: 'Quit',
+                    click: () => {
+                        app.quit();
+                    }
+                }
+            ]
+        }
+    ]
+};
 
 function saveItem(item) {
     const type = item.type;

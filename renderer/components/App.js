@@ -19,7 +19,7 @@ export default class App extends React.Component {
             this.setState({data});
         });
 
-        document.addEventListener('paste', () => {
+        document.addEventListener('paste', e => {
             ipcRenderer.send('paste', {
                 type: this.state.type,
                 url: clipboard.readText()
